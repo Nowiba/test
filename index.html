@@ -1,25 +1,802 @@
 <!DOCTYPE html>
-<html lang="fr">
+<html lang="en">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>PSW.html</title>
+    <title>Barberly - Modern Barbering (Redesign Concept)</title>
+
+    <style>
+        /* 1. CSS Reset & Base Styles */
+        :root {
+            --primary-bg: #121212; /* Dark background */
+            --secondary-bg: #1f1f1f; /* Slightly lighter dark */
+            --text-color: #e0e0e0;  /* Light grey text */
+            --accent-color: #00aaff; /* Sharp blue accent */
+            --heading-font: 'Poppins', sans-serif; /* Example modern font */
+            --body-font: 'Roboto', sans-serif;    /* Example readable font */
+        }
+
+        /* Import Google Fonts (Example) */
+        @import url('https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;600;700&family=Roboto:wght@300;400&display=swap');
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        html {
+            scroll-behavior: smooth; /* Enable smooth scrolling for internal links */
+            font-size: 16px; /* Base font size */
+        }
+
+        body {
+            font-family: var(--body-font);
+            background-color: var(--primary-bg);
+            color: var(--text-color);
+            line-height: 1.6;
+            overflow-x: hidden; /* Prevent horizontal scrollbars from animations */
+        }
+
+        h1, h2, h3, h4, h5, h6 {
+            font-family: var(--heading-font);
+            font-weight: 600;
+            margin-bottom: 1rem;
+            color: #ffffff; /* Brighter headings */
+        }
+
+        h1 { font-size: 3rem; line-height: 1.2; }
+        h2 { font-size: 2.2rem; }
+        h3 { font-size: 1.5rem; }
+
+        p {
+            margin-bottom: 1rem;
+            font-weight: 300;
+        }
+
+        a {
+            color: var(--accent-color);
+            text-decoration: none;
+            transition: color 0.3s ease;
+        }
+
+        a:hover {
+            color: #ffffff;
+        }
+
+        img {
+            max-width: 100%;
+            height: auto;
+            display: block;
+        }
+
+        section {
+            padding: 80px 20px;
+            overflow: hidden; /* Contain animations */
+        }
+
+        .container {
+            max-width: 1100px;
+            margin: 0 auto;
+            padding: 0 15px;
+        }
+
+        /* 2. Navigation */
+        .main-header {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            z-index: 1000;
+            padding: 15px 30px;
+            background: rgba(18, 18, 18, 0.8); /* Semi-transparent background */
+            backdrop-filter: blur(5px);
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .logo {
+            font-family: var(--heading-font);
+            font-size: 1.8rem;
+            font-weight: 700;
+            color: #fff;
+        }
+
+        .nav-toggle {
+            background: none;
+            border: none;
+            cursor: pointer;
+            z-index: 1001; /* Above nav */
+        }
+
+        .hamburger {
+            display: block;
+            width: 30px;
+            height: 3px;
+            background-color: #fff;
+            position: relative;
+            transition: background-color 0.3s ease;
+        }
+        .hamburger::before,
+        .hamburger::after {
+            content: '';
+            position: absolute;
+            left: 0;
+            width: 30px;
+            height: 3px;
+            background-color: #fff;
+            transition: transform 0.3s ease, top 0.3s ease;
+        }
+        .hamburger::before { top: -8px; }
+        .hamburger::after { top: 8px; }
+
+        /* Nav Toggle Animation */
+        .nav-open .hamburger { background-color: transparent; }
+        .nav-open .hamburger::before { transform: rotate(45deg); top: 0; }
+        .nav-open .hamburger::after { transform: rotate(-45deg); top: 0; }
+
+        .main-nav {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100vh;
+            background-color: rgba(18, 18, 18, 0.98); /* Slightly transparent dark overlay */
+            backdrop-filter: blur(10px);
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            transform: translateX(-100%); /* Initially hidden off-screen */
+            transition: transform 0.5s cubic-bezier(0.77, 0, 0.175, 1);
+            z-index: 999; /* Below toggle */
+        }
+
+        .nav-open .main-nav {
+            transform: translateX(0%); /* Slide in */
+        }
+
+        .main-nav ul {
+            list-style: none;
+            padding: 0;
+            text-align: center;
+        }
+
+        .main-nav li {
+            margin: 25px 0;
+        }
+
+        .main-nav a {
+            color: var(--text-color);
+            font-size: 1.8rem;
+            font-weight: 300;
+            text-transform: uppercase;
+            letter-spacing: 2px;
+            padding: 10px 20px;
+            transition: color 0.3s ease, letter-spacing 0.3s ease;
+        }
+
+        .main-nav a:hover {
+            color: var(--accent-color);
+            letter-spacing: 4px;
+        }
+
+
+        /* 3. Hero Section */
+        #hero {
+            min-height: 100vh; /* Full viewport height */
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            text-align: center;
+            background: linear-gradient(rgba(18, 18, 18, 0.7), rgba(18, 18, 18, 0.9)), url('https://via.placeholder.com/1920x1080.png?text=Barber+Shop+Atmosphere') no-repeat center center/cover; /* Placeholder background */
+            color: #fff;
+        }
+
+        .hero-content h1 {
+            font-size: clamp(2.5rem, 6vw, 4.5rem); /* Responsive font size */
+            font-weight: 700;
+            margin-bottom: 0.5rem;
+            animation: fadeInDown 1s ease-out;
+        }
+
+        .hero-content p {
+            font-size: clamp(1rem, 2.5vw, 1.3rem);
+            font-weight: 300;
+            margin-bottom: 2rem;
+            max-width: 600px;
+            margin-left: auto;
+            margin-right: auto;
+             animation: fadeInUp 1s ease-out 0.3s;
+             animation-fill-mode: backwards; /* Start invisible before animation */
+        }
+
+        .cta-button {
+            display: inline-block;
+            background-color: var(--accent-color);
+            color: var(--primary-bg);
+            padding: 15px 35px;
+            border-radius: 50px; /* Pill shape */
+            font-weight: 600;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+            transition: background-color 0.3s ease, transform 0.3s ease;
+            animation: fadeInUp 1s ease-out 0.6s;
+            animation-fill-mode: backwards;
+        }
+
+        .cta-button:hover {
+            background-color: #fff;
+            color: var(--primary-bg);
+            transform: translateY(-3px);
+        }
+
+        /* 4. Services Section */
+        #services {
+            background-color: var(--secondary-bg);
+        }
+
+        .section-title {
+            text-align: center;
+            margin-bottom: 4rem;
+            font-size: 2.5rem;
+            font-weight: 700;
+            position: relative;
+            padding-bottom: 10px;
+        }
+        /* Simple underline effect */
+        .section-title::after {
+            content: '';
+            position: absolute;
+            bottom: 0;
+            left: 50%;
+            transform: translateX(-50%);
+            width: 60px;
+            height: 3px;
+            background-color: var(--accent-color);
+        }
+
+
+        .services-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+            gap: 30px;
+        }
+
+        .service-card {
+            background-color: var(--primary-bg);
+            padding: 30px;
+            border-radius: 8px;
+            text-align: center;
+            transition: transform 0.3s ease, box-shadow 0.3s ease;
+            /* For animation trigger */
+            opacity: 0;
+            transform: translateY(30px);
+        }
+
+        .service-card.is-visible {
+             opacity: 1;
+             transform: translateY(0);
+             transition: opacity 0.6s ease-out, transform 0.6s ease-out;
+         }
+
+        .service-card:hover {
+            transform: translateY(-10px);
+            box-shadow: 0 10px 20px rgba(0, 170, 255, 0.1);
+        }
+
+        .service-card i { /* Placeholder for icon */
+            font-size: 2.5rem;
+            color: var(--accent-color);
+            margin-bottom: 1rem;
+            /* In a real project, use Font Awesome or SVGs here */
+            display: block;
+        }
+         .service-card h3 {
+            margin-bottom: 0.5rem;
+            color: #fff;
+        }
+
+        /* 5. About Section */
+        #about {
+            background-color: var(--primary-bg);
+            /* Add potential parallax background later if desired */
+        }
+        .about-content {
+             display: grid;
+             grid-template-columns: 1fr 1fr; /* Simple two column layout */
+             gap: 40px;
+             align-items: center;
+         }
+
+         .about-text {
+             /* For animation trigger */
+             opacity: 0;
+             transform: translateX(-30px);
+         }
+         .about-text.is-visible {
+              opacity: 1;
+              transform: translateX(0);
+              transition: opacity 0.6s ease-out, transform 0.6s ease-out 0.2s; /* Slight delay */
+          }
+
+         .about-image {
+             text-align: center; /* Center the placeholder */
+             /* For animation trigger */
+              opacity: 0;
+              transform: translateX(30px);
+         }
+          .about-image.is-visible {
+               opacity: 1;
+               transform: translateX(0);
+               transition: opacity 0.6s ease-out, transform 0.6s ease-out 0.2s; /* Slight delay */
+           }
+         .about-image img {
+             border-radius: 8px;
+             max-width: 400px; /* Limit image size */
+             margin: 0 auto; /* Center if needed */
+             box-shadow: 0 5px 15px rgba(0,0,0,0.3);
+         }
+
+
+        /* 6. Gallery Section */
+         #gallery {
+            background-color: var(--secondary-bg);
+        }
+
+        .gallery-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            gap: 15px;
+        }
+
+        .gallery-item {
+            overflow: hidden;
+            border-radius: 5px;
+            position: relative;
+            cursor: pointer;
+            /* For animation trigger */
+            opacity: 0;
+            transform: scale(0.9);
+        }
+         .gallery-item.is-visible {
+              opacity: 1;
+              transform: scale(1);
+              transition: opacity 0.5s ease-out, transform 0.5s ease-out;
+          }
+          /* Add staggered delay in JS */
+
+        .gallery-item img {
+            transition: transform 0.4s ease;
+            width: 100%;
+            height: 100%;
+            object-fit: cover; /* Ensure images cover the area */
+        }
+
+        .gallery-item:hover img {
+            transform: scale(1.1);
+        }
+
+        .gallery-item::after { /* Simple overlay on hover */
+             content: '+';
+             position: absolute;
+             top: 0;
+             left: 0;
+             width: 100%;
+             height: 100%;
+             background: rgba(0, 170, 255, 0.7);
+             color: white;
+             display: flex;
+             justify-content: center;
+             align-items: center;
+             font-size: 3rem;
+             opacity: 0;
+             transition: opacity 0.4s ease;
+         }
+         .gallery-item:hover::after {
+             opacity: 1;
+         }
+
+
+        /* 7. Booking Section */
+        #booking {
+            background-color: var(--primary-bg);
+            text-align: center;
+        }
+
+        #booking p {
+            max-width: 600px;
+            margin-left: auto;
+            margin-right: auto;
+            margin-bottom: 2rem;
+        }
+
+        .booking-form {
+            max-width: 600px;
+            margin: 0 auto;
+            text-align: left;
+            /* For animation trigger */
+            opacity: 0;
+            transform: translateY(30px);
+        }
+         .booking-form.is-visible {
+              opacity: 1;
+              transform: translateY(0);
+              transition: opacity 0.6s ease-out, transform 0.6s ease-out;
+          }
+
+
+        .form-group {
+            margin-bottom: 1.5rem;
+        }
+
+        .form-group label {
+            display: block;
+            margin-bottom: 0.5rem;
+            font-weight: 400;
+            color: var(--text-color);
+        }
+
+        .form-group input,
+        .form-group select,
+        .form-group textarea {
+            width: 100%;
+            padding: 12px 15px;
+            border: 1px solid #444; /* Darker border */
+            border-radius: 4px;
+            background-color: var(--secondary-bg);
+            color: var(--text-color);
+            font-family: inherit;
+            font-size: 1rem;
+            transition: border-color 0.3s ease, box-shadow 0.3s ease;
+        }
+
+        .form-group input:focus,
+        .form-group select:focus,
+        .form-group textarea:focus {
+            outline: none;
+            border-color: var(--accent-color);
+            box-shadow: 0 0 0 2px rgba(0, 170, 255, 0.3);
+        }
+
+        .form-submit-button {
+             display: inline-block;
+             background-color: var(--accent-color);
+             color: var(--primary-bg);
+             padding: 15px 35px;
+             border: none;
+             border-radius: 50px;
+             font-weight: 600;
+             text-transform: uppercase;
+             letter-spacing: 1px;
+             cursor: pointer;
+             transition: background-color 0.3s ease, transform 0.3s ease;
+             width: 100%; /* Make button full width within its container */
+             margin-top: 1rem;
+        }
+
+        .form-submit-button:hover {
+            background-color: #fff;
+            color: var(--primary-bg);
+            transform: translateY(-3px);
+        }
+
+        /* 8. Contact Section */
+        #contact {
+            background-color: var(--secondary-bg);
+            text-align: center;
+        }
+
+        .contact-info p {
+            font-size: 1.1rem;
+            margin-bottom: 0.8rem;
+        }
+        .contact-info strong {
+            color: #fff;
+        }
+
+
+        /* 9. Footer */
+        footer {
+            text-align: center;
+            padding: 30px 20px;
+            background-color: var(--primary-bg);
+            border-top: 1px solid #333;
+            font-size: 0.9rem;
+            color: #aaa;
+        }
+
+        /* 10. Animations Keyframes */
+        @keyframes fadeInDown {
+            from { opacity: 0; transform: translateY(-20px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+
+        @keyframes fadeInUp {
+            from { opacity: 0; transform: translateY(20px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+
+        /* 11. Responsive Design */
+        @media (max-width: 768px) {
+            h1 { font-size: 2.5rem; }
+            h2 { font-size: 1.8rem; }
+            .section-title { font-size: 2rem; }
+
+            .main-header { padding: 15px; }
+            .logo { font-size: 1.5rem; }
+
+            section { padding: 60px 15px; }
+
+            .about-content {
+                grid-template-columns: 1fr; /* Stack columns */
+                text-align: center;
+            }
+            .about-image { margin-top: 30px; }
+            .about-image img { max-width: 80%; } /* Adjust image size */
+
+             .about-text, .about-image {
+                 /* Reset transforms for mobile stacking if needed */
+                 transform: none;
+                 opacity: 0; /* Still rely on observer */
+             }
+             .about-text.is-visible { transform: none; opacity: 1; }
+             .about-image.is-visible { transform: none; opacity: 1; }
+
+            .main-nav a { font-size: 1.5rem; }
+
+            .booking-form { padding: 0 10px; }
+        }
+
+        @media (max-width: 480px) {
+             html { font-size: 14px; } /* Adjust base font size */
+             h1 { font-size: 2rem; }
+             .hero-content p { font-size: 0.9rem; }
+             .cta-button { padding: 12px 25px; font-size: 0.9rem;}
+             .services-grid { grid-template-columns: 1fr; } /* Single column services */
+             .gallery-grid { grid-template-columns: repeat(auto-fit, minmax(150px, 1fr)); gap: 10px;}
+        }
+
+    </style>
 </head>
-<body align="center">
-    <h2>Bienvenu Pseudo</h2>
-    <div>
-        <label for="password" onclick="changePlaceholder()">Password :</label>
-        <input type="password" id="password" placeholder="">
-       
-    </div>
-    <br>
-    <div>
-        <button style="background-color:black; color:white;">Tester</button>
-    </div>
-    <br>
-    <div>
-        <p id="message"></p>
-    </div>
-    <script src="t.js"></script>
+<body>
+
+    <!-- Header & Navigation -->
+    <header class="main-header">
+        <div class="logo">Barberly</div>
+        <button class="nav-toggle" id="nav-toggle" aria-label="Toggle navigation">
+            <span class="hamburger"></span>
+        </button>
+        <nav class="main-nav" id="main-nav">
+            <ul>
+                <li><a href="#hero" class="nav-link">Home</a></li>
+                <li><a href="#services" class="nav-link">Services</a></li>
+                <li><a href="#about" class="nav-link">About</a></li>
+                <li><a href="#gallery" class="nav-link">Gallery</a></li>
+                <li><a href="#booking" class="nav-link">Booking</a></li>
+                <li><a href="#contact" class="nav-link">Contact</a></li>
+            </ul>
+        </nav>
+    </header>
+
+    <main>
+
+        <!-- Hero Section -->
+        <section id="hero">
+            <div class="container">
+                <div class="hero-content">
+                    <h1>Modern Barbering Experience</h1>
+                    <p>Sharp cuts, classic shaves, and modern styles. Experience the difference at Barberly.</p>
+                    <a href="#booking" class="cta-button">Book Appointment</a>
+                </div>
+            </div>
+        </section>
+
+        <!-- Services Section -->
+        <section id="services">
+            <div class="container">
+                <h2 class="section-title animate-on-scroll">Our Services</h2>
+                <div class="services-grid">
+                    <article class="service-card animate-on-scroll">
+                        <i class="service-icon">[ICON]</i> <!-- Placeholder for Icon -->
+                        <h3>Classic Haircut</h3>
+                        <p>Timeless styles tailored to your preference. Includes wash and style.</p>
+                    </article>
+                    <article class="service-card animate-on-scroll">
+                        <i class="service-icon">[ICON]</i>
+                        <h3>Hot Towel Shave</h3>
+                        <p>Traditional straight razor shave with hot towels and soothing balms.</p>
+                    </article>
+                    <article class="service-card animate-on-scroll">
+                        <i class="service-icon">[ICON]</i>
+                        <h3>Beard Trim & Shape</h3>
+                        <p>Expert shaping, trimming, and conditioning for a perfect beard.</p>
+                    </article>
+                     <article class="service-card animate-on-scroll">
+                        <i class="service-icon">[ICON]</i>
+                        <h3>Modern Fade</h3>
+                        <p>Precision fades from skin fades to tapers, executed flawlessly.</p>
+                    </article>
+                </div>
+            </div>
+        </section>
+
+        <!-- About Section -->
+        <section id="about">
+            <div class="container">
+                 <h2 class="section-title animate-on-scroll">Meet Barberly</h2>
+                 <div class="about-content">
+                     <div class="about-text animate-on-scroll">
+                         <h3>Crafting Confidence, One Cut at a Time</h3>
+                         <p>Barberly isn't just a place to get a haircut; it's an experience. We blend traditional techniques with modern trends to provide top-tier grooming services in a relaxed, stylish environment.</p>
+                         <p>Our team of skilled barbers is passionate about their craft and dedicated to ensuring every client leaves looking and feeling their best. We use premium products and pay meticulous attention to detail.</p>
+                     </div>
+                     <div class="about-image animate-on-scroll">
+                         <img src="https://via.placeholder.com/400x500.png?text=Stylish+Barber+Shop+Interior" alt="Barberly Shop Interior Concept">
+                     </div>
+                 </div>
+            </div>
+        </section>
+
+        <!-- Gallery Section -->
+        <section id="gallery">
+            <div class="container">
+                <h2 class="section-title animate-on-scroll">Our Work</h2>
+                <div class="gallery-grid">
+                    <!-- Add 6-9 gallery items. Use real image URLs -->
+                    <div class="gallery-item animate-on-scroll"><img src="https://via.placeholder.com/300x300.png?text=Haircut+1" alt="Gallery Image 1"></div>
+                    <div class="gallery-item animate-on-scroll"><img src="https://via.placeholder.com/300x300.png?text=Haircut+2" alt="Gallery Image 2"></div>
+                    <div class="gallery-item animate-on-scroll"><img src="https://via.placeholder.com/300x300.png?text=Beard+Style" alt="Gallery Image 3"></div>
+                    <div class="gallery-item animate-on-scroll"><img src="https://via.placeholder.com/300x300.png?text=Fade+Example" alt="Gallery Image 4"></div>
+                    <div class="gallery-item animate-on-scroll"><img src="https://via.placeholder.com/300x300.png?text=Classic+Cut" alt="Gallery Image 5"></div>
+                    <div class="gallery-item animate-on-scroll"><img src="https://via.placeholder.com/300x300.png?text=Shave+Setup" alt="Gallery Image 6"></div>
+                </div>
+            </div>
+        </section>
+
+        <!-- Booking Section -->
+        <section id="booking">
+            <div class="container">
+                <h2 class="section-title animate-on-scroll">Book Your Appointment</h2>
+                <p class="animate-on-scroll">Ready for a fresh look? Select your service and preferred time below. We look forward to seeing you!</p>
+                <form class="booking-form animate-on-scroll" id="bookingForm">
+                    <div class="form-group">
+                        <label for="name">Name</label>
+                        <input type="text" id="name" name="name" required>
+                    </div>
+                    <div class="form-group">
+                        <label for="email">Email</label>
+                        <input type="email" id="email" name="email" required>
+                    </div>
+                    <div class="form-group">
+                        <label for="service">Service</label>
+                        <select id="service" name="service" required>
+                            <option value="">-- Select a Service --</option>
+                            <option value="classic_cut">Classic Haircut</option>
+                            <option value="hot_shave">Hot Towel Shave</option>
+                            <option value="beard_trim">Beard Trim & Shape</option>
+                             <option value="modern_fade">Modern Fade</option>
+                        </select>
+                    </div>
+                    <div class="form-group">
+                        <label for="date">Preferred Date</label>
+                        <input type="date" id="date" name="date" required>
+                    </div>
+                    <div class="form-group">
+                        <label for="message">Message (Optional)</label>
+                        <textarea id="message" name="message" rows="3"></textarea>
+                    </div>
+                    <button type="submit" class="form-submit-button">Request Booking</button>
+                </form>
+            </div>
+        </section>
+
+         <!-- Contact Section -->
+        <section id="contact">
+            <div class="container">
+                 <h2 class="section-title animate-on-scroll">Get In Touch</h2>
+                 <div class="contact-info animate-on-scroll">
+                     <p><strong>Address:</strong> 123 Barber Lane, Style City, SC 12345</p>
+                     <p><strong>Phone:</strong> <a href="tel:+1234567890">(123) 456-7890</a></p>
+                     <p><strong>Hours:</strong> Tue - Fri: 9am - 7pm | Sat: 8am - 4pm | Sun & Mon: Closed</p>
+                     <!-- Optionally add a map embed here -->
+                 </div>
+            </div>
+        </section>
+
+    </main>
+
+    <!-- Footer -->
+    <footer>
+        <div class="container">
+            <p>© <span id="year"></span> Barberly. All Rights Reserved. Concept Design.</p>
+            <!-- Add social media links here if desired -->
+        </div>
+    </footer>
+
+    <script>
+        document.addEventListener('DOMContentLoaded', () => {
+
+            // --- Dynamic Year for Footer ---
+            const yearSpan = document.getElementById('year');
+            if (yearSpan) {
+                yearSpan.textContent = new Date().getFullYear();
+            }
+
+            // --- Navigation Toggle ---
+            const navToggle = document.getElementById('nav-toggle');
+            const mainNav = document.getElementById('main-nav');
+            const navLinks = document.querySelectorAll('.nav-link');
+            const body = document.body;
+
+            if (navToggle && mainNav) {
+                navToggle.addEventListener('click', () => {
+                    body.classList.toggle('nav-open'); // Toggle class on body
+                });
+            }
+
+            // Close nav when a link is clicked
+            navLinks.forEach(link => {
+                link.addEventListener('click', () => {
+                    if (body.classList.contains('nav-open')) {
+                         body.classList.remove('nav-open');
+                    }
+                });
+            });
+
+
+            // --- Intersection Observer for Animations ---
+            const animatedElements = document.querySelectorAll('.animate-on-scroll');
+
+            const observer = new IntersectionObserver((entries, observer) => {
+                entries.forEach((entry, index) => {
+                    if (entry.isIntersecting) {
+                        // Add a staggered delay for gallery items if needed
+                        let delay = 0;
+                        if (entry.target.closest('.gallery-grid')) {
+                            // Find index within the gallery grid for stagger effect
+                            const galleryItems = Array.from(entry.target.parentNode.children);
+                            const itemIndex = galleryItems.indexOf(entry.target);
+                            delay = itemIndex * 100; // 100ms delay between items
+                        } else if (entry.target.closest('.services-grid')) {
+                             const serviceItems = Array.from(entry.target.parentNode.children);
+                             const itemIndex = serviceItems.indexOf(entry.target);
+                             delay = itemIndex * 150; // 150ms delay
+                         }
+
+
+                        setTimeout(() => {
+                             entry.target.classList.add('is-visible');
+                        }, delay);
+
+                        observer.unobserve(entry.target); // Optional: Animate only once
+                    }
+                });
+            }, {
+                root: null, // relative to document viewport
+                threshold: 0.1 // trigger when 10% of the element is visible
+            });
+
+            animatedElements.forEach(el => {
+                observer.observe(el);
+            });
+
+
+            // --- Basic Form Handling (Placeholder) ---
+             const bookingForm = document.getElementById('bookingForm');
+             if (bookingForm) {
+                 bookingForm.addEventListener('submit', (event) => {
+                     event.preventDefault(); // Prevent actual form submission
+                     // In a real app, you'd gather data and send it to a server/API
+                     console.log('Booking form submitted (demo). Data would be sent here.');
+                     alert('Thank you for your booking request! (This is a demo)');
+                     // Optionally clear the form: bookingForm.reset();
+                 });
+             }
+
+        });
+    </script>
+
 </body>
 </html>
